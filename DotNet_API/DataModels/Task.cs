@@ -13,7 +13,7 @@ namespace DotNet_API.DataModels
         public int ID { get; set; }
 
         [Required]
-        public int CategotyID { get; set; }
+        public int CategoryID { get; set; }
 
         [Required]
         public string UserID { get; set; } = string.Empty;
@@ -36,14 +36,7 @@ namespace DotNet_API.DataModels
 
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-        [ForeignKey("PriorityID")]
-        public Priority? Priority { get; set; }
-
-        [ForeignKey("UserID")]
-        public AppUser? User { get; set; }
-
-        [ForeignKey("CategoryID")]
-        public Category? Category { get; set; }
+      
 
 
 

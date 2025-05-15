@@ -1,5 +1,5 @@
-/* Importing external styles before any other rules */
-@import "@ng-select/ng-select/themes/material.theme.css";
+/* Importing external styles before any other rules
+/*@import "@ng-select/ng-select/themes/material.theme.css"; */
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
 /* Tailwind imports */

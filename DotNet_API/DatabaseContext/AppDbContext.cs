@@ -17,9 +17,7 @@ namespace DotNet_API.DatabaseContext
 
         public DbSet<DataModels.Task> Tasks { get; set; }
 
-        public DbSet<Category> Categories { get; set; }
-
-        public DbSet<Priority> Priorities { get; set; }
+      
 
 
 

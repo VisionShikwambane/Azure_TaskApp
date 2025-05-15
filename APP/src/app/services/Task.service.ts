@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { InvoiceDetails } from '../models/InvoiceDetails';
 import { BaseService } from './baseService';
+import { Task } from '../models/Task';
 
 @Injectable({
   providedIn: 'root',
 })
-export class InvoiceService extends BaseService<InvoiceDetails> {
+export class TaskService extends BaseService<Task> {
 
-  protected route = 'Invoice';
+  protected route = 'Task';
 
   constructor(http: HttpClient) {
     super(http);
