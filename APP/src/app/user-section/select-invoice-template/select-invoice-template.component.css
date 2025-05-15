@@ -1,0 +1,28 @@
+/* Optional: Add any custom styles here */
+.template-card {
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .template-card:hover {
+    transform: translateY(-4px);
+  }
+  
+  .template-image {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .template-card:hover .template-image {
+    transform: scale(1.05);
+  }
+  
+  .template-overlay {
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .tag {
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .tag:hover {
+    background-color: rgb(224, 231, 255);
+  }

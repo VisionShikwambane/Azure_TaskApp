@@ -1,0 +1,87 @@
+<div class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100/50 flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white rounded-xl shadow-sm p-6 sm:p-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-900">Welcome Back</h1>
+            <p class="text-gray-600 mt-2">Sign in to manage your clients</p>
+        </div>
+
+        <!-- Login Form -->
+        <form (ngSubmit)="onSubmit()" class="space-y-6">
+            <!-- Email Field -->
+            <div class="space-y-2">
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <div class="relative rounded-md shadow-sm">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <input 
+                        id="email" 
+                        type="email" 
+                        [(ngModel)]="credentials.email" 
+                        name="email" 
+                        required 
+                        class="block w-full pl-10 sm:text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" 
+                        placeholder="email@example.com"
+                    >
+                </div>
+            </div>
+
+            <!-- Password Field -->
+            <div class="space-y-2">
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <div class="relative rounded-md shadow-sm">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                d="M12 11c0 1.104-.896 2-2 2s-2-.896-2-2 2-4 2-4 2 2.896 2 4zm0 0c0 1.104-.896 2-2 2s-2-.896-2-2m-2 0c0-2.208 1.792-4 4-4s4 1.792 4 4-1.792 4-4 4zm-6 6h12M6 17v-6c0-3.314 2.686-6 6-6s6 2.686 6 6v6" />
+                        </svg>
+                    </div>
+                    <input 
+                        id="password" 
+                        type="password" 
+                        [(ngModel)]="credentials.password" 
+                        name="password" 
+                        required 
+                        class="block w-full pl-10 sm:text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" 
+                        placeholder="••••••••"
+                    >
+                </div>
+            </div>
+
+            <!-- Error Message (if any) -->
+            <div *ngIf="errorMessage" class="text-sm text-red-600 text-center">
+                {{ errorMessage }}
+            </div>
+
+            <!-- Submit Button -->
+            <div>
+                <button 
+                    type="submit" 
+                    [disabled]="!credentials.email || !credentials.password" 
+                    class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400 disabled:cursor-not-allowed"
+                >
+                    Sign In
+                </button>
+            </div>
+        </form>
+
+        <!-- Forgot Password Link -->
+        <div class="mt-6 text-center">
+            <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                Forgot your password?
+            </a>
+        </div>
+
+        <!-- Sign Up Prompt -->
+        <div class="mt-4 text-center text-sm text-gray-600">
+            Don't have an account? 
+            <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
+                Sign up here
+            </a>
+        </div>
+    </div>
+</div>

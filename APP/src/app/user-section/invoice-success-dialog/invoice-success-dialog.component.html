@@ -1,0 +1,66 @@
+<div *ngIf="show" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex items-center justify-center">
+  <div class="bg-white rounded-lg shadow-xl max-w-lg w-full mx-4 p-6">
+    <!-- Success Header -->
+    <div class="mb-4 flex items-center justify-between">
+      <div class="flex items-center">
+        <svg class="w-6 h-6 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <h2 class="text-lg font-medium text-green-800">Invoice Saved Successfully!</h2>
+      </div>
+      <button aria-label="Close dialog" (click)="onClose.emit()" class="text-gray-400 hover:text-gray-500">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Invoice Summary Card -->
+    <div class="bg-gray-100 p-4 rounded-lg mb-4">
+      <h3 class="text-sm font-medium text-gray-900 mb-2">Invoice Summary</h3>
+      <dl class="grid grid-cols-2 gap-2 text-sm">
+        <div>
+          <dt class="text-gray-500">Number:</dt>
+          <dd class="text-gray-900">{{ invoiceDetails.number }}</dd>
+        </div>
+        <div>
+          <dt class="text-gray-500">Client:</dt>
+          <dd class="text-gray-900">{{ invoiceDetails.client }}</dd>
+        </div>
+        <div>
+          <dt class="text-gray-500">Amount:</dt>
+          <dd class="text-gray-900">${{ invoiceDetails.amount | number:'1.2-2' }}</dd>
+        </div>
+        <div>
+          <dt class="text-gray-500">Due Date:</dt>
+          <dd class="text-gray-900">{{ invoiceDetails.dueDate | date:'mediumDate' }}</dd>
+        </div>
+      </dl>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="space-y-4">
+      <button (click)="onActionClick('send')" class="w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        Send Invoice
+      </button>
+      <button (click)="onActionClick('saveDraft')" class="w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+        Leave as Draft
+      </button>
+      <button (click)="onActionClick('download')" class="w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+        Download PDF
+      </button>
+    </div>  
+
+    <!-- Email Input for Send Action -->
+    <div *ngIf="showEmailInput" class="mt-4">
+      <label class="block text-sm font-medium text-gray-700">Email To</label>
+      <input type="email" [(ngModel)]="sendInvoiceToEmail" [ngClass]="{'border-red-500': !isValidEmail(sendInvoiceToEmail)}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Enter email address">
+      <span *ngIf="!isValidEmail(sendInvoiceToEmail)" class="text-red-500 text-xs">Please enter a valid email address.</span>
+    </div>
+
+    <!-- Action Buttons for Send -->
+    <div *ngIf="showEmailInput" class="flex justify-end mt-4">
+      <button [disabled]="!isValidEmail(sendInvoiceToEmail)" (click)="confirmSend()" class="px-4 py-2 text-sm font-medium bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        Confirm Send
+      </button>
+    </div>
+  </div>
+</div>
