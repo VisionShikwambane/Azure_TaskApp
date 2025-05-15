@@ -2,7 +2,6 @@
 using DinkToPdf.Contracts;
 using DotNet_API.DatabaseContext;
 using DotNet_API.DataModels;
-using DotNet_API.DtoModels;
 using DotNet_API.Repositories;
 using DotNet_API.Utilities;
 using MailKit.Net.Smtp;
@@ -14,11 +13,11 @@ namespace DotNet_API.Services
     public class EmailService
     {
         private readonly IConfiguration _configuration;
-        private readonly InvoiceRepository _invoiceRepository;
-        public EmailService(IConfiguration configuration, InvoiceRepository invoiceRepository)
+       
+        public EmailService(IConfiguration configuration)
         {
             _configuration = configuration;
-            _invoiceRepository = invoiceRepository;
+         // _invoiceRepository = invoiceRepository;
         }
 
         //public async Task<ResponseObject<bool>> SendInvoiceEmailAsync(int invoiceId)
@@ -80,197 +79,197 @@ namespace DotNet_API.Services
 
 
 
-        private string GetInvoiceEmailTemplate(Invoice invoice)
-        {
-            return $@"
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset='UTF-8'>
-        <title>Invoice {invoice.InvoiceNo} - Your Company</title>
-        <style>
-            body {{
-                font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-                background-color: #f8fafc;
-                margin: 0;
-                padding: 0;
-                color: #1e293b;
-                line-height: 1.5;
-            }}
+    //    private string GetInvoiceEmailTemplate(Invoice invoice)
+    //    {
+    //        return $@"
+    //<!DOCTYPE html>
+    //<html>
+    //<head>
+    //    <meta charset='UTF-8'>
+    //    <title>Invoice {invoice.InvoiceNo} - Your Company</title>
+    //    <style>
+    //        body {{
+    //            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    //            background-color: #f8fafc;
+    //            margin: 0;
+    //            padding: 0;
+    //            color: #1e293b;
+    //            line-height: 1.5;
+    //        }}
 
-            .container {{
-                max-width: 600px;
-                margin: 40px auto;
-                background: #ffffff;
-                border-radius: 16px;
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-                padding: 32px;
-            }}
+    //        .container {{
+    //            max-width: 600px;
+    //            margin: 40px auto;
+    //            background: #ffffff;
+    //            border-radius: 16px;
+    //            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    //            padding: 32px;
+    //        }}
 
-            .header {{
-                text-align: left;
-                margin-bottom: 32px;
-                padding-bottom: 24px;
-                border-bottom: 1px solid #e2e8f0;
-            }}
+    //        .header {{
+    //            text-align: left;
+    //            margin-bottom: 32px;
+    //            padding-bottom: 24px;
+    //            border-bottom: 1px solid #e2e8f0;
+    //        }}
 
-            h2 {{
-                color: #2563eb;
-                font-size: 24px;
-                font-weight: 600;
-                margin: 0;
-            }}
+    //        h2 {{
+    //            color: #2563eb;
+    //            font-size: 24px;
+    //            font-weight: 600;
+    //            margin: 0;
+    //        }}
 
-            .subheading {{
-                color: #64748b;
-                font-size: 14px;
-                margin-top: 8px;
-            }}
+    //        .subheading {{
+    //            color: #64748b;
+    //            font-size: 14px;
+    //            margin-top: 8px;
+    //        }}
 
-            .invoice-info {{
-                background: #f8fafc;
-                border-radius: 12px;
-                padding: 20px;
-                margin: 24px 0;
-            }}
+    //        .invoice-info {{
+    //            background: #f8fafc;
+    //            border-radius: 12px;
+    //            padding: 20px;
+    //            margin: 24px 0;
+    //        }}
 
-            .invoice-summary {{
-                width: 100%;
-                border-spacing: 0;
-                margin: 24px 0;
-            }}
+    //        .invoice-summary {{
+    //            width: 100%;
+    //            border-spacing: 0;
+    //            margin: 24px 0;
+    //        }}
 
-            .invoice-summary th {{
-                background-color: #f1f5f9;
-                color: #475569;
-                font-weight: 500;
-                text-align: left;
-                padding: 12px 16px;
-                font-size: 14px;
-            }}
+    //        .invoice-summary th {{
+    //            background-color: #f1f5f9;
+    //            color: #475569;
+    //            font-weight: 500;
+    //            text-align: left;
+    //            padding: 12px 16px;
+    //            font-size: 14px;
+    //        }}
 
-            .invoice-summary td {{
-                padding: 16px;
-                border-bottom: 1px solid #e2e8f0;
-            }}
+    //        .invoice-summary td {{
+    //            padding: 16px;
+    //            border-bottom: 1px solid #e2e8f0;
+    //        }}
 
-            .amount {{
-                font-size: 20px;
-                font-weight: 600;
-                color: #2563eb;
-            }}
+    //        .amount {{
+    //            font-size: 20px;
+    //            font-weight: 600;
+    //            color: #2563eb;
+    //        }}
 
-            .status {{
-                display: inline-block;
-                padding: 6px 12px;
-                border-radius: 20px;
-                font-size: 14px;
-                font-weight: 500;
-                background-color: #dbeafe;
-                color: #2563eb;
-            }}
+    //        .status {{
+    //            display: inline-block;
+    //            padding: 6px 12px;
+    //            border-radius: 20px;
+    //            font-size: 14px;
+    //            font-weight: 500;
+    //            background-color: #dbeafe;
+    //            color: #2563eb;
+    //        }}
 
-            .button {{
-                display: inline-block;
-                background-color: #2563eb;
-                color: white;
-                padding: 12px 24px;
-                text-decoration: none;
-                border-radius: 8px;
-                font-weight: 500;
-                margin: 24px 0;
-                text-align: center;
-            }}
+    //        .button {{
+    //            display: inline-block;
+    //            background-color: #2563eb;
+    //            color: white;
+    //            padding: 12px 24px;
+    //            text-decoration: none;
+    //            border-radius: 8px;
+    //            font-weight: 500;
+    //            margin: 24px 0;
+    //            text-align: center;
+    //        }}
 
-            .button:hover {{
-                background-color: #1d4ed8;
-            }}
+    //        .button:hover {{
+    //            background-color: #1d4ed8;
+    //        }}
 
-            .next-steps {{
-                background: #f8fafc;
-                border-radius: 12px;
-                padding: 20px;
-                margin: 24px 0;
-            }}
+    //        .next-steps {{
+    //            background: #f8fafc;
+    //            border-radius: 12px;
+    //            padding: 20px;
+    //            margin: 24px 0;
+    //        }}
 
-            .next-steps h3 {{
-                color: #1e293b;
-                font-size: 16px;
-                margin: 0 0 12px 0;
-            }}
+    //        .next-steps h3 {{
+    //            color: #1e293b;
+    //            font-size: 16px;
+    //            margin: 0 0 12px 0;
+    //        }}
 
-            .footer {{
-                margin-top: 32px;
-                padding-top: 24px;
-                border-top: 1px solid #e2e8f0;
-                text-align: center;
-                color: #64748b;
-                font-size: 14px;
-            }}
-        </style>
-    </head>
-    <body>
-        <div class='container'>
-            <div class='header'>
-                <h2>Invoice #{invoice.InvoiceNo} from {invoice.CompanyName} </h2>
-            </div>
+    //        .footer {{
+    //            margin-top: 32px;
+    //            padding-top: 24px;
+    //            border-top: 1px solid #e2e8f0;
+    //            text-align: center;
+    //            color: #64748b;
+    //            font-size: 14px;
+    //        }}
+    //    </style>
+    //</head>
+    //<body>
+    //    <div class='container'>
+    //        <div class='header'>
+    //            <h2>Invoice #{invoice.InvoiceNo} from {invoice.CompanyName} </h2>
+    //        </div>
 
-            <p>Dear {invoice.Client!.Name},</p>
+    //        <p>Dear {invoice.Client!.Name},</p>
             
-            <p>Please find attached your invoice for our recent services. Here are the important details:</p>
+    //        <p>Please find attached your invoice for our recent services. Here are the important details:</p>
 
-            <div class='invoice-info'>
-                <table class='invoice-summary'>
-                    <tr>
-                        <th>Invoice Number</th>
-                        <td>#{invoice.InvoiceNo}</td>
-                    </tr>
-                    <tr>
-                        <th>Issue Date</th>
-                        <td>{invoice.IssueDate.ToString("MMMM dd, yyyy")}</td>
-                    </tr>
-                    <tr>
-                        <th>Payment Due</th>
-                        <td>{invoice.DueDate.ToString("MMMM dd, yyyy")}</td>
-                    </tr>
-                    <tr>
-                        <th>Total Amount</th>
-                        <td class='amount'>{invoice.Total:C}</td>
-                    </tr>
-                    <tr>
-                        <th>Payment Status</th>
-                        <td><span class='status'>{invoice.Status}</span></td>
-                    </tr>
-                </table>
-            </div>
+    //        <div class='invoice-info'>
+    //            <table class='invoice-summary'>
+    //                <tr>
+    //                    <th>Invoice Number</th>
+    //                    <td>#{invoice.InvoiceNo}</td>
+    //                </tr>
+    //                <tr>
+    //                    <th>Issue Date</th>
+    //                    <td>{invoice.IssueDate.ToString("MMMM dd, yyyy")}</td>
+    //                </tr>
+    //                <tr>
+    //                    <th>Payment Due</th>
+    //                    <td>{invoice.DueDate.ToString("MMMM dd, yyyy")}</td>
+    //                </tr>
+    //                <tr>
+    //                    <th>Total Amount</th>
+    //                    <td class='amount'>{invoice.Total:C}</td>
+    //                </tr>
+    //                <tr>
+    //                    <th>Payment Status</th>
+    //                    <td><span class='status'>{invoice.Status}</span></td>
+    //                </tr>
+    //            </table>
+    //        </div>
 
-            <div class='next-steps'>
-                <h3>Payment Instructions</h3>
-                <p>1. Review the complete invoice details using the link below</p>
-                <p>2. Process payment before the due date: {invoice.DueDate.ToString("MMMM dd, yyyy")}</p>
-                <p>3. Retain a copy for your financial records</p>
-            </div>
+    //        <div class='next-steps'>
+    //            <h3>Payment Instructions</h3>
+    //            <p>1. Review the complete invoice details using the link below</p>
+    //            <p>2. Process payment before the due date: {invoice.DueDate.ToString("MMMM dd, yyyy")}</p>
+    //            <p>3. Retain a copy for your financial records</p>
+    //        </div>
 
-            <div style='text-align: center;'>
-                <a href='https://example.com/' class='button'>
-                    View Invoice Details
-                </a>
-            </div>
+    //        <div style='text-align: center;'>
+    //            <a href='https://example.com/' class='button'>
+    //                View Invoice Details
+    //            </a>
+    //        </div>
 
-            <div class='footer'>
-                <p>For any inquiries regarding this invoice, please contact our finance department:</p>
-                <p>
-                    <strong>Your Company</strong><br>
-                    123 Business Street, Suite 100<br>
-                    City, State 12345<br>
-                    Email: finance@yourcompany.com<br>
-                    Phone: (555) 123-4567
-                </p>
-            </div>
-        </div>
-    </body>
-    </html>";
-        }
+    //        <div class='footer'>
+    //            <p>For any inquiries regarding this invoice, please contact our finance department:</p>
+    //            <p>
+    //                <strong>Your Company</strong><br>
+    //                123 Business Street, Suite 100<br>
+    //                City, State 12345<br>
+    //                Email: finance@yourcompany.com<br>
+    //                Phone: (555) 123-4567
+    //            </p>
+    //        </div>
+    //    </div>
+    //</body>
+    //</html>";
+    //    }
 
 
 

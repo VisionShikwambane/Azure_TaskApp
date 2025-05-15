@@ -86,322 +86,93 @@ namespace DotNet_API.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("DotNet_API.DataModels.Client", b =>
+            modelBuilder.Entity("DotNet_API.DataModels.Category", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar(500)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                    b.HasKey("ID");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("clients");
+                    b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("DotNet_API.DataModels.EmailSettings", b =>
+            modelBuilder.Entity("DotNet_API.DataModels.Priority", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("DefaultFromEmail")
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
-                    b.Property<string>("DefaultFromName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.HasKey("ID");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("Port")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SmtpServer")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EmailSettings");
+                    b.ToTable("Priorities");
                 });
 
-            modelBuilder.Entity("DotNet_API.DataModels.Invoice", b =>
+            modelBuilder.Entity("DotNet_API.DataModels.Task", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("ClientId")
+                    b.Property<int?>("CategoryID")
                         .HasColumnType("int");
 
-                    b.Property<string>("CompanyAddress")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar(500)");
+                    b.Property<int>("CategotyID")
+                        .HasColumnType("int");
 
-                    b.Property<string>("CompanyEmail")
-                        .IsRequired()
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
-                    b.Property<byte[]>("CompanyLogo")
-                        .HasColumnType("longblob");
-
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("CompanyPhone")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
-
-                    b.Property<DateTime>("DueDate")
+                    b.Property<DateTime?>("DueDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("InvoiceNo")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<int?>("InvoiceTemplateId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("IssueDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("SignatureDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<byte[]>("SignatureImage")
-                        .HasColumnType("longblob");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<decimal>("Subtotal")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Tax")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("TaxRate")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("TemplateId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TermsAndConditions")
-                        .HasColumnType("longtext");
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("isArchived")
+                    b.Property<bool>("IsCompleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClientId");
-
-                    b.HasIndex("InvoiceTemplateId");
-
-                    b.ToTable("invoices");
-                });
-
-            modelBuilder.Entity("DotNet_API.DataModels.InvoiceItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("PriorityID")
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
+                    b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar(500)");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
-                    b.Property<int>("InvoiceId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InvoiceId");
-
-                    b.ToTable("invoiceitems");
-                });
-
-            modelBuilder.Entity("DotNet_API.DataModels.InvoiceTemplate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Preview")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Tags")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("TemplatePath")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("InvoiceTemplates");
-                });
-
-            modelBuilder.Entity("DotNet_API.DataModels.Settings", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CompanyAdress")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("CompanyEmail")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<byte[]>("CompanyLogo")
-                        .HasColumnType("longblob");
-
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("CompanyPhone")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("DefaultCurrency")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("DefaultNote")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("DefaultTermsAndConditions")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("InvoiceNextNo")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("InvoicePrefix")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("UserID")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
-                    b.Property<bool?>("VatEnabled")
-                        .HasColumnType("tinyint(1)");
+                    b.HasKey("ID");
 
-                    b.Property<double?>("VatRate")
-                        .HasColumnType("double");
+                    b.HasIndex("CategoryID");
 
-                    b.HasKey("Id");
+                    b.HasIndex("PriorityID");
 
-                    b.ToTable("Settings");
-                });
+                    b.HasIndex("UserID");
 
-            modelBuilder.Entity("DotNet_API.DataModels.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -536,32 +307,29 @@ namespace DotNet_API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("DotNet_API.DataModels.Invoice", b =>
+            modelBuilder.Entity("DotNet_API.DataModels.Task", b =>
                 {
-                    b.HasOne("DotNet_API.DataModels.Client", "Client")
-                        .WithMany("Invoices")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DotNet_API.DataModels.InvoiceTemplate", "InvoiceTemplate")
+                    b.HasOne("DotNet_API.DataModels.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("InvoiceTemplateId");
+                        .HasForeignKey("CategoryID");
 
-                    b.Navigation("Client");
-
-                    b.Navigation("InvoiceTemplate");
-                });
-
-            modelBuilder.Entity("DotNet_API.DataModels.InvoiceItem", b =>
-                {
-                    b.HasOne("DotNet_API.DataModels.Invoice", "Invoice")
-                        .WithMany("Items")
-                        .HasForeignKey("InvoiceId")
+                    b.HasOne("DotNet_API.DataModels.Priority", "Priority")
+                        .WithMany()
+                        .HasForeignKey("PriorityID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Invoice");
+                    b.HasOne("DotNet_API.DataModels.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Priority");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -613,16 +381,6 @@ namespace DotNet_API.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("DotNet_API.DataModels.Client", b =>
-                {
-                    b.Navigation("Invoices");
-                });
-
-            modelBuilder.Entity("DotNet_API.DataModels.Invoice", b =>
-                {
-                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

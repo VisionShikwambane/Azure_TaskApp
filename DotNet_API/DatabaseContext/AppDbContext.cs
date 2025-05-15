@@ -12,20 +12,16 @@ namespace DotNet_API.DatabaseContext
         {
         }
 
-      
-
-        public DbSet<Invoice> Invoices { get; set; }
-
-        public DbSet<InvoiceItem> InvoiceItems { get; set; }
-
-        public DbSet<Client> Clients { get; set; }
-
-        public DbSet<InvoiceTemplate> InvoiceTemplates { get; set; }
-
-        public DbSet<EmailSettings> EmailSettings { get; set; }
 
 
-        public DbSet<Settings> Settings { get; set; }
+
+        public DbSet<DataModels.Task> Tasks { get; set; }
+
+        public DbSet<Category> Categories { get; set; }
+
+        public DbSet<Priority> Priorities { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
