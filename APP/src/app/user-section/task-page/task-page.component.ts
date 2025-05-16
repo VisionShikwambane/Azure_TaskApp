@@ -111,7 +111,7 @@ export class TaskPageComponent implements OnInit {
     this.loading = true;
     this.taskService.getAll().subscribe(
       (tasks: Task[]) => {
-        console.log('Raw tasks from API:', tasks);
+        console.log('Fetched tasks:', tasks);
         this.tasks = tasks.map(task => ({
           ...task,
           dueDate: task.dueDate ? new Date(task.dueDate) : undefined,
@@ -120,7 +120,7 @@ export class TaskPageComponent implements OnInit {
           priority: this.priorities.find(p => p.id === task.priorityID) || undefined,
           category: this.categories.find(c => c.id === task.categoryID) || undefined,
         }));
-        console.log('Mapped tasks:', this.tasks[0].category);
+       
         this.filteredTasks = this.tasks;
         this.loading = false;
       },
@@ -204,11 +204,11 @@ editTask(task: Task) {
       this.newTask.dueDate = undefined;
     }
 
-    // Convert string IDs to numbers
+ 
     this.newTask.priorityID = this.newTask.priorityID ? Number(this.newTask.priorityID) : 0;
     this.newTask.categoryID = this.newTask.categoryID ? Number(this.newTask.categoryID) : 0;
 
-    // Set user ID for new tasks
+
     if (!this.newTask.id) {
       this.newTask.userID = "testUser";
     }
@@ -216,15 +216,13 @@ editTask(task: Task) {
     console.log('Submitting task:', this.newTask);
     this.loading = true;
 
-    // Determine if we're updating an existing task or creating a new one
+
     const isEditing = !!this.newTask.id;
 
     this.taskService.saveRecord(this.newTask).subscribe(
       (response) => {
         const savedTask: Task = response.data;
 
-   
-        // Add priority and category objects to the saved task
         const processedTask = {
           ...savedTask,
           priority: this.priorities.find(p => p.id === savedTask.priorityID) || undefined,
@@ -232,7 +230,7 @@ editTask(task: Task) {
         };
 
         if (isEditing) {
-          // Update the existing task in the arrays
+      
           this.tasks = this.tasks.map(task =>
             task.id === savedTask.id ? processedTask : task
           );
