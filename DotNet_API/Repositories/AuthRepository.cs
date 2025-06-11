@@ -1,4 +1,5 @@
 ﻿using DotNet_API.DataModels;
+using DotNet_API.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -24,7 +25,7 @@ namespace DotNet_API.Repositories
 
 
         // Register a new user and return a confirmation token
-        public async Task<(IdentityResult Result, string? EmailConfirmationToken)> RegisterAsync(string email, string password)
+        public async Task<ResponseObject<string>> RegisterAsync(string email, string password)
         {
             var user = new AppUser
             {
@@ -33,15 +34,18 @@ namespace DotNet_API.Repositories
             };
 
             var result = await userManager.CreateAsync(user, password);
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                await userManager.AddToRoleAsync(user, "User");
-                var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-                return (result, token);
+                var errors = result.Errors.Select(e => e.Description).ToList();
+                return ResponseObject<string>.Fail("User registration failed", errors);
             }
 
-            return (result, null);
+            await userManager.AddToRoleAsync(user, "User");
+            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            return ResponseObject<string>.Success("User registered successfully", token);
         }
+
 
 
         public async Task<IdentityResult> ConfirmEmailAsync(string email, string token)
@@ -57,59 +61,68 @@ namespace DotNet_API.Repositories
 
 
 
-        public async Task<string?> LoginAsync(string email, string password)
+        public async Task<ResponseObject<string>> LoginAsync(string email, string password)
         {
             var user = await userManager.FindByEmailAsync(email);
             if (user == null || !await userManager.CheckPasswordAsync(user, password))
             {
-                return null; // Invalid credentials
+                return ResponseObject<string>.Fail("Invalid email or password");
             }
 
-            // Check if email is confirmed
             if (!await userManager.IsEmailConfirmedAsync(user))
             {
-                return "Email not comfirmed";
+                return ResponseObject<string>.Fail("Email not confirmed");
             }
 
-            // Generate JWT token
             var userRoles = await userManager.GetRolesAsync(user);
             var authClaims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            };
+        new Claim(ClaimTypes.Name, user.UserName),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+             };
+
 
             foreach (var role in userRoles)
             {
                 authClaims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var token = GenerateJwtToken(authClaims);
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var token = new JwtSecurityTokenHandler().WriteToken(GenerateJwtToken(authClaims));
+            return ResponseObject<string>.Success("Login successful", token);
         }
 
-        public async Task<string?> GeneratePasswordResetTokenAsync(string email)
+        public async Task<ResponseObject<string>> GeneratePasswordResetTokenAsync(string email)
         {
             var user = await userManager.FindByEmailAsync(email);
             if (user == null)
             {
-                return null; // User not found
+                return ResponseObject<string>.Fail("User not found");
             }
 
-            return await userManager.GeneratePasswordResetTokenAsync(user);
+            var token = await userManager.GeneratePasswordResetTokenAsync(user);
+            return ResponseObject<string>.Success("Password reset token generated", token);
         }
+
 
         // Reset password using the token
-        public async Task<IdentityResult> ResetPasswordAsync(string email, string token, string newPassword)
+        public async Task<ResponseObject<bool>> ResetPasswordAsync(string email, string token, string newPassword)
         {
             var user = await userManager.FindByEmailAsync(email);
             if (user == null)
             {
-                return IdentityResult.Failed(new IdentityError { Description = "User not found" });
+                return ResponseObject<bool>.Fail("User not found");
             }
 
-            return await userManager.ResetPasswordAsync(user, token, newPassword);
+            var result = await userManager.ResetPasswordAsync(user, token, newPassword);
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(e => e.Description).ToList();
+                return ResponseObject<bool>.Fail("Password reset failed", errors);
+            }
+
+            return ResponseObject<bool>.Success("Password reset successfully", true);
         }
+
 
 
         private JwtSecurityToken GenerateJwtToken(List<Claim> authClaims)

@@ -21,16 +21,27 @@ namespace DotNet_API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
-            var (result, token) = await this.authRepository.RegisterAsync(model.Email, model.Password);
-            if (result.Succeeded)
-            {
-                // TODO: Send the token via email (see step 5)
-                var confirmationLink = Url.Action(nameof(ConfirmEmail),"Auth",new { email = model.Email, token },Request.Scheme);
+            var result = await this.authRepository.RegisterAsync(model.Email, model.Password);
 
-                return Ok(new { Message = "User registered successfully. Please check your email to confirm.", ConfirmationLink = confirmationLink });
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { result.Message, result.Errors });
             }
-            return BadRequest(result.Errors);
+
+            var confirmationLink = Url.Action(
+                nameof(ConfirmEmail),
+                "Auth",
+                new { email = model.Email, token = result.Data },
+                Request.Scheme
+            );
+
+            return Ok(new
+            {
+                result.Message,
+                ConfirmationLink = confirmationLink
+            });
         }
+
 
 
         [HttpGet("confirm-email")]
@@ -48,51 +59,62 @@ namespace DotNet_API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            var token = await this.authRepository.LoginAsync(model.Email, model.Password);
-            if (token == null)
+            var result = await authRepository.LoginAsync(model.Email, model.Password);
+
+            if (!result.IsSuccess)
             {
-                return Unauthorized("Invalid email, password, or email not confirmed");
+                return Unauthorized(result);
             }
-            return Ok(new { Token = token });
+
+            return Ok(result);
         }
+
 
 
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordModel model)
         {
-            var token = await this.authRepository.GeneratePasswordResetTokenAsync(model.Email);
-            if (token == null)
+            var result = await authRepository.GeneratePasswordResetTokenAsync(model.Email);
+
+            if (!result.IsSuccess)
             {
-                return BadRequest(new { Message = "User not found" });
+                return BadRequest(new { result.Message });
             }
 
-            var resetLink = Url.Action(nameof(ResetPassword),"Auth",new { email = model.Email, token }, Request.Scheme);
+            var resetLink = Url.Action(nameof(ResetPassword), "Auth", new { email = model.Email, token = result.Data }, Request.Scheme);
 
             var emailBody = $"Reset your password by clicking this link: <a href='{resetLink}'>Reset Password</a>";
-           /// await _emailService.SendEmailAsync(model.Email, "Password Reset Request", emailBody);
+            // await _emailService.SendEmailAsync(model.Email, "Password Reset Request", emailBody);
 
-            return Ok(new { Message = "Password reset link sent to your email", ResetLink = resetLink });
+            return Ok(new
+            {
+                result.Message,
+                ResetLink = resetLink
+            });
         }
+
 
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel model)
         {
             var decodedToken = HttpUtility.UrlDecode(model.Token);
-
             var result = await this.authRepository.ResetPasswordAsync(model.Email, decodedToken, model.NewPassword);
-            if (result.Succeeded)
+
+            if (!result.IsSuccess)
             {
-                return Ok(new { Message = "Password reset successfully" });
+                return BadRequest(new { result.Message, result.Errors });
             }
-            return BadRequest(result.Errors);
+
+            return Ok(new { result.Message });
         }
+
 
 
 
     }
 
 
-   
+
     public class RegisterModel
     {
         public string Email { get; set; }  = string.Empty;
