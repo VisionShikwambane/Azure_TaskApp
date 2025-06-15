@@ -1,7 +1,5 @@
 ﻿
-using DotNet_API.Services;
-using DotNet_API.Utilities;
-using Microsoft.AspNetCore.Http;
+using DotNet_API.Helper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotNet_API.Controllers

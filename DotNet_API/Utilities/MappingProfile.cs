@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
-using DotNet_API.DataModels;
-using Task = DotNet_API.DataModels.Task;
+using DotNet_API.Entities;
+using DotNet_API.DTOs;
+using Task = DotNet_API.Entities.Task;
+
 
 
 namespace DotNet_API.Utilities
@@ -9,7 +11,7 @@ namespace DotNet_API.Utilities
     {
         public MappingProfile()
         {
-            CreateMap<Task, TaskDTO>();
+            CreateMap<Task, TaskDto>();
                
 
 

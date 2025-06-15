@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
 using DinkToPdf.Contracts;
 using DotNet_API.DatabaseContext;
-using DotNet_API.DataModels;
+using DotNet_API.Entities;
 using DotNet_API.Repositories;
 using DotNet_API.Utilities;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 
-namespace DotNet_API.Services
+namespace DotNet_API.Helper
 {
     public class EmailService
     {

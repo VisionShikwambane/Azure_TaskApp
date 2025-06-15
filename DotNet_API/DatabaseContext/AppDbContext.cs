@@ -1,6 +1,8 @@
-﻿using DotNet_API.DataModels;
+﻿
+using DotNet_API.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Task = DotNet_API.Entities.Task;
 
 namespace DotNet_API.DatabaseContext
 {
@@ -15,9 +17,11 @@ namespace DotNet_API.DatabaseContext
 
 
 
-        public DbSet<DataModels.Task> Tasks { get; set; }
+        public DbSet<Task> Tasks { get; set; }
 
-      
+        public DbSet<Subscription> Subscriptions { get; set; }
+
+
 
 
 

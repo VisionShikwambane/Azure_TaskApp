@@ -1,4 +1,4 @@
-﻿using DotNet_API.DataModels;
+﻿using DotNet_API.Entities;
 using DotNet_API.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;

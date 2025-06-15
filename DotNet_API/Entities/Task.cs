@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
-namespace DotNet_API.DataModels
+namespace DotNet_API.Entities
 {
 
    
@@ -43,12 +43,7 @@ namespace DotNet_API.DataModels
 
     }
 
-    public class TaskDTO : Task
-    {
-      
-
-    }
-
+ 
 
 
 }

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace DotNet_API.DataModels
+namespace DotNet_API.Entities
 {
     public class EmailSettings
     {

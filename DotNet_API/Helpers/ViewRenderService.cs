@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DotNet_API.Services
+namespace DotNet_API.Helper
 {
     public interface IViewRenderService
     {

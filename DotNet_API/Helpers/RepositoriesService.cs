@@ -1,14 +1,14 @@
 ﻿using System.Reflection;
 
-namespace DotNet_API.Services
+namespace DotNet_API.Helper
 {
-    public static class ServicesService
+    public static class RepositoriesService
     {
-        public static void AddServices(this IServiceCollection services)
+        public static void AddRepositories(this IServiceCollection services)
         {
             var assembly = Assembly.GetExecutingAssembly();
             var repositoryTypes = assembly.GetTypes()
-                .Where(t => t.Name.EndsWith("Service") && t.IsClass && !t.IsAbstract)
+                .Where(t => t.Name.EndsWith("Repository") && t.IsClass && !t.IsAbstract)
                 .ToList();
 
             foreach (var type in repositoryTypes)

@@ -1,28 +1,36 @@
-using DinkToPdf.Contracts;
 using DinkToPdf;
+using DinkToPdf.Contracts;
 using DotNet_API.DatabaseContext;
+using DotNet_API.Entities;
+using DotNet_API.Helper;
+using DotNet_API.Models;
+using DotNet_API.Repositories;
 using DotNet_API.Services;
 using DotNet_API.Utilities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using DotNet_API.DataModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRepositories();
+builder.Services.AddServices();
 builder.Services
     .AddControllersWithViews();
 builder.Services.AddScoped<IViewRenderService, ViewRenderService>();
 builder.Services.AddRazorPages();
-builder.Services.AddServices();
+
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(GenericService<,>));
+
 builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.Configure<PaystackSettings>(builder.Configuration.GetSection("Paystack"));
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
 {
